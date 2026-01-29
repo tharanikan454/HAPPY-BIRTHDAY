@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fullscreen Video with Click Password</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body, html { width:100%; height:100%; font-family:Arial,sans-serif; overflow:hidden; }
+
+    .video-container { position:relative; width:100%; height:100%; overflow:hidden; }
+    .video-container video {
+      position:absolute; top:50%; left:50%;
+      min-width:100%; min-height:100%;
+      width:auto; height:auto;
+      transform:translate(-50%, -50%);
+      object-fit:cover; z-index:1;
+    }
+
+    .overlay {
+      position:absolute; bottom:20px; left:20px;
+      z-index:2;
+      cursor:pointer;
+    }
+
+    .overlay img {
+      width:150px; max-width:25vw; height:auto;
+      box-shadow:0 0 15px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="video-container">
+    <video id="myVideo" autoplay muted loop>
+      <source src="./pictures\video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+    <div class="overlay" id="overlay">
+      <img src="./pictures\logo.png" alt="Logo">
+    </div>
+  </div>
+
+  <script>
+    const video = document.getElementById('myVideo');
+    const overlay = document.getElementById('overlay');
+
+    // Click logo to enter password
+    overlay.addEventListener('click', () => {
+      let password = prompt("Enter password to continue:");
+      if(password && password.toLowerCase() === "happy birthday eli") {
+        // Correct password → redirect to another HTML page
+        window.location.href = "photos.html"; // <-- your next page
+      } else {
+        // Wrong password → redirect somewhere else
+        alert("Wrong password! Redirecting...");
+        window.location.href = "https://www.google.com"; // change if you want
+      }
+    });
+
+    // Click anywhere to unmute video
+    document.body.addEventListener('click', () => {
+      if(video.paused) video.play();
+      video.muted = false;
+    });
+  </script>
+</body>
+</html>

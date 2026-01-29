@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday 🎂</title>
+
+<!-- 🔥 VERY IMPORTANT FOR MOBILE -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+/* 🌈 BASE */
+body{
+  margin:0;
+  height:100vh;
+  font-family:"Courier New",monospace;
+  background:radial-gradient(circle at top,#ffdde1,#ee9ca7);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  color:#fff;
+}
+
+/* 🎊 CONFETTI */
+.confetti{
+  position:fixed;
+  width:8px;
+  height:14px;
+  top:-20px;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(360deg);}
+}
+
+/* 🎈 BALLOONS */
+.balloon{
+  position:absolute;
+  bottom:-120px;
+  font-size:46px;
+  animation:floatUp linear infinite, sway ease-in-out infinite;
+  opacity:0.95;
+}
+@keyframes floatUp{
+  to{transform:translateY(-120vh);}
+}
+@keyframes sway{
+  0%{margin-left:0;}
+  50%{margin-left:20px;}
+  100%{margin-left:0;}
+}
+
+/* 🎂 TERMINAL */
+.terminal{
+  width:80%;
+  max-width:720px;
+  background:rgba(0,0,0,0.35);
+  border:2px solid #fff;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 0 30px rgba(255,255,255,.6);
+  z-index:5;
+}
+pre{
+  margin:0;
+  white-space:pre-wrap;
+  font-size:17px;
+}
+
+/* 🎁 GIFT */
+.gift{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  font-size:70px;
+  cursor:pointer;
+  animation:shake 2s infinite;
+  z-index:15;
+}
+@keyframes shake{
+  0%,100%{transform:rotate(0);}
+  25%{transform:rotate(5deg);}
+  75%{transform:rotate(-5deg);}
+}
+
+/* 🔐 LOGIN */
+.login-box{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:25;
+}
+.login-inner{
+  width:90%;
+  max-width:400px;
+  background:rgba(0,0,0,.5);
+  border:2px solid #fff;
+  padding:25px;
+  border-radius:12px;
+  text-align:center;
+}
+.password-box{
+  position:relative;
+  width:100%;
+  margin-top:15px;
+}
+input{
+  width:100%;
+  box-sizing:border-box;
+  padding:12px 45px 12px 12px;
+  background:rgba(0,0,0,.6);
+  border:1px solid #fff;
+  color:#fff;
+  font-size:16px;
+  border-radius:6px;
+}
+.eye{
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
+  cursor:pointer;
+}
+button{
+  margin-top:15px;
+  width:100%;
+  padding:12px;
+  background:#ffd700;
+  border:none;
+  border-radius:6px;
+  font-weight:bold;
+  cursor:pointer;
+}
+#error{margin-top:10px;color:#ff4444;}
+
+/* 💖 NAME INTRO */
+.name-intro{
+  position:fixed;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,.85);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 1s;
+  z-index:30;
+}
+.name-intro.show{opacity:1;}
+.name-text{
+  text-align:center;
+  font-size:60px;
+  font-weight:bold;
+  letter-spacing:3px;
+  color:#ffdde1;
+  text-shadow:0 0 15px hotpink,0 0 40px deeppink;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  50%{transform:scale(1.08);}
+}
+
+/* 🎆 FIREWORK */
+.firework{
+  position:fixed;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  animation:explode 1.5s ease-out forwards;
+}
+@keyframes explode{
+  to{opacity:0;transform:translate(var(--x),var(--y)) scale(0);}
+}
+
+/* 🎉 HAPPY BIRTHDAY TOP TEXT */
+.happy-birthday-effect{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:42px;
+  font-weight:bold;
+  letter-spacing:3px;
+  text-shadow:0 0 15px gold,0 0 30px hotpink;
+  z-index:10;
+}
+
+/* 📱 MOBILE RESPONSIVE */
+@media (max-width:600px){
+
+  body{padding:10px;}
+
+  .terminal{
+    width:100%;
+    padding:18px;
+  }
+
+  pre{font-size:14px;}
+
+  .name-text{
+    font-size:32px;
+    letter-spacing:1px;
+  }
+
+  .happy-birthday-effect{
+    font-size:26px;
+    top:10px;
+  }
+
+  .gift{
+    font-size:50px;
+    right:12px;
+    bottom:12px;
+  }
+
+  .balloon{
+    font-size:30px;
+  }
+
+  .confetti:nth-child(n+40){
+    display:none;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="terminal">
+  <pre id="terminal-text"></pre>
+</div>
+
+<div class="gift" onclick="openGift()">🎁</div>
+
+<div class="login-box" id="loginBox">
+  <div class="login-inner">
+    <h2>🎂 Birthday Surprise 🎉</h2>
+    <div class="password-box">
+      <input type="password" id="password" placeholder="Birthday Key">
+      <span class="eye" onclick="togglePassword()">👁️</span>
+    </div>
+    <button onclick="login()">OPEN GIFT</button>
+    <div id="error"></div>
+  </div>
+</div>
+
+<div class="name-intro" id="nameIntro">
+  <div class="name-text">
+     HAPPY BIRTHDAY <br> ABISHALINI 🎂
+  </div>
+</div>
+
+<div class="happy-birthday-effect">🎉 HAPPY BIRTHDAY 🎉</div>
+
+<script>
+
+/* 🎊 CONFETTI */
+for(let i=0;i<70;i++){
+  const c=document.createElement("div");
+  c.className="confetti";
+  c.style.left=Math.random()*100+"vw";
+  c.style.background=`hsl(${Math.random()*360},100%,60%)`;
+  c.style.animationDuration=(3+Math.random()*4)+"s";
+  document.body.appendChild(c);
+}
+
+/* 🎈 BALLOONS */
+const emojis=["🎈","🎂"];
+for(let i=0;i<12;i++){
+  const b=document.createElement("div");
+  b.className="balloon";
+  b.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  b.style.left=Math.random()*100+"vw";
+  b.style.animationDuration=(8+Math.random()*6)+"s";
+  document.body.appendChild(b);
+}
+
+/* 🎂 TERMINAL TEXT */
+const lines=[
+"🎉 Our age is merely the number of years the world has been enjoying us!...\n",
+"🎈 The day is all yours — have fun...\n",
+"🎂 HAPPY BIRTHDAY WISHES ABISHALINI...\n",
+"✨ Be happy!Today is the day you were brought into this world to be a blessing ✨\n",
+"🎁 Again Happy birthday! I hope all your birthday wishes and dreams come true...\n"
+];
+let l=0,c=0;
+const term=document.getElementById("terminal-text");
+
+function type(){
+  if(l<lines.length){
+    if(c<lines[l].length){
+      term.textContent+=lines[l][c++];
+      setTimeout(type,40);
+    }else{l++;c=0;setTimeout(type,300);}
+  }else{showIntro();}
+}
+type();
+
+/* 🎆 FIREWORK */
+function fireworks(){
+  for(let i=0;i<80;i++){
+    const f=document.createElement("div");
+    f.className="firework";
+    f.style.left="50vw";
+    f.style.top="50vh";
+    f.style.background=`hsl(${Math.random()*360},100%,60%)`;
+    const a=Math.random()*2*Math.PI;
+    const d=120+Math.random()*180;
+    f.style.setProperty("--x",Math.cos(a)*d+"px");
+    f.style.setProperty("--y",Math.sin(a)*d+"px");
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),1500);
+  }
+}
+function showIntro(){
+  const i=document.getElementById("nameIntro");
+  i.classList.add("show");
+  fireworks();
+  setTimeout(()=>i.classList.remove("show"),3500);
+}
+
+/* 🔐 LOGIN */
+function openGift(){
+  document.getElementById("loginBox").style.display="flex";
+}
+function togglePassword(){
+  const p=document.getElementById("password");
+  p.type=p.type==="password"?"text":"password";
+}
+function login(){
+  const p=document.getElementById("password").value;
+  if(p==="happy birthday bro"){
+    window.location.href="video.html";
+  }else if(p==="happy birthday abishalini"){
+    window.location.href="birthday.html";
+  }else{
+    document.getElementById("error").innerText="❌ Wrong Birthday Key";
+  }
+}
+
+</script>
+
+</body>
+</html>
